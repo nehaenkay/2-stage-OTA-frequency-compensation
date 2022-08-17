@@ -1,0 +1,63 @@
+2 stage OTA with current mirror dc parameters
+
+
+*** netlisting can be given as
+
+.include cmos_130nm.txt
+
+M1 2 Vin1 1 1 PMOS         W= 60U L= 1U
+M2 3 Vin2 1 1 PMOS         W= 60U L= 1U
+M3 2 2 0 0 NMOS            W= 3U L= 1U
+M4 3 2 0 0 NMOS            W= 3U L= 1U
+M5 1 Iref vdd Vdd PMOS     W= 62U L= 1U
+M6 Vout 3 0 0 NMOS         W= 21.67U L= 1U
+M7 Vout Iref vdd Vdd PMOS  W= 221U L= 1U
+MSS Iref Iref vdd Vdd PMOS W= 6.5U L= 1U
+
+*Capacitors
+CL  Vout 0 1p
+Cc  4  Vout   1.19p
+
+*resistor
+Rc  4 3 1333.56
+
+*supply**
+V1 vdd 0 1.5
+
+* Iref required for constant current mirror*
+I1 Iref  0 10U
+
+** given value of Vcm to be used to calculate parameters**
+VG1 Vin1 0 0.6 
+VG2 Vin2 0 0.6 
+
+.control
+**** DC Operating Point******
+op
+print @M6[gm]
+print @M7[gm]
+print @M6[id]
+print @M7[id]
+print @M6[gds]
+print @M7[gds]
+print @M1[gm]
+print @M2[gds]
+print @M3[gm]
+print @M4[gds]
+print @M5[gm]
+print @M2[gm]
+let gd6 = @M6[gds]
+let ro6 = '1/gd6'
+print ro6
+let gd7 = @M7[gds]
+let r07 = '1/gd7'
+print r07
+let Av1 = @M1[gm]/(@M4[gds]+@M2[gds])
+print Av1
+let Av2 = @M6[gm]/(@M6[gds]+@M7[gds])
+print Av2
+.endc
+.end
+
+
+
